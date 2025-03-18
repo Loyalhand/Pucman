@@ -7,34 +7,22 @@ var move_right: bool = false
 var move_up: bool = false
 var move_down: bool = false
 
+var last_input = null
+var last_pos = null
+
+var move_input := Vector2i.ZERO
+
 func _physics_process(delta):
 	
-	if Input.is_action_just_pressed("move_left"): 
-		move_left = true
-		move_right = false
-		move_up = false
-		move_down = false
-	if Input.is_action_just_pressed("move_right"): 
-		move_left = false
-		move_right = true
-		move_up = false
-		move_down = false
-	if Input.is_action_just_pressed("move_up"): 
-		move_left = false
-		move_right = false
-		move_up = true
-		move_down = false
-	if Input.is_action_just_pressed("move_down"): 
-		move_left = false
-		move_right = false
-		move_up = false
-		move_down = true
+	var direction = Vector2i.ZERO
+	direction.x = (Input.get_axis("move_left", "move_right"))
+	direction.y = (Input.get_axis("move_up", "move_down"))
 	
-	if move_left: 
-		position.x -= SPEED * delta
-	if move_right: 
-		position.x += SPEED * delta
-	if move_up: 
-		position.y -= SPEED * delta
-	if move_down: 
-		position.y += SPEED * delta
+	if direction.x != 0:
+		move_input = Vector2(direction.x, 0)
+	elif direction.y != 0:
+		move_input = Vector2(0, direction.y)
+	
+	velocity = SPEED * move_input	
+	move_and_slide()
+	print(move_input)
