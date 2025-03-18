@@ -1,23 +1,58 @@
 extends CharacterBody2D
 
+class_name Player
 
-const SPEED = 300.0
-var move_input := Vector2i.ZERO
+#variables
+var next_movement_direction = Vector2.ZERO
+var movement_direction = Vector2.ZERO
+var shape_query = PhysicsShapeQueryParameters2D.new()
+
+#export variables
+@export var speed = 300
+
+
+#onready variables
+@onready var collision_shape_2d = $CollisionShape2D
+
+func _ready():
+	shape_query.shape = collision_shape_2d.shape
+	shape_query.collision_mask = 2
 
 func _physics_process(delta):
+	get_input()
 	
-	var direction = Vector2i.ZERO
-	direction.x = Input.get_axis("move_left", "move_right")
-	direction.y = Input.get_axis("move_up", "move_down")
+	if movement_direction == Vector2.ZERO:
+		movement_direction = next_movement_direction
+		
+	if can_move_in_direction(next_movement_direction, delta):
+		movement_direction = next_movement_direction
 	
-	if direction.x != 0:
-		move_input = Vector2(direction.x, 0)
-	elif direction.y != 0:
-		move_input = Vector2(0, direction.y)
+	velocity = movement_direction * speed
+	move_and_slide()
 	
-	#velocity = SPEED * move_input	
-	#move_and_slide()
+
+func get_input():
 	
-	# move with dedicated tiles
-	# create map and tiles first
+	if Input.is_action_pressed("move_left"):
+		next_movement_direction = Vector2.LEFT
+		rotation_degrees = 270
+	elif  Input.is_action_pressed("move_right"):
+		next_movement_direction = Vector2.RIGHT
+		rotation_degrees = 90
+	elif Input.is_action_pressed("move_down"):
+		next_movement_direction = Vector2.DOWN
+		rotation_degrees = 180
+	elif Input.is_action_pressed("move_up"):
+		next_movement_direction = Vector2.UP
+		rotation_degrees = 0
+
+# creates a raycast of its collision shape in the direction of next input and 
+# returns true if no collidables are in the shape
+func can_move_in_direction(dir: Vector2, delta: float) -> bool:
+	shape_query.transform = global_transform.translated(dir * speed * delta * 2)
+	var result = get_world_2d().direct_space_state.intersect_shape(shape_query)
+	if result:
+		print("Hit at point: ", result)
+	return result.size() == 0	
+
 	
