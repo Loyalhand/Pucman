@@ -1,19 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://bg0go7bq8ywey"]
+[gd_scene load_steps=3 format=3 uid="uid://bg0go7bq8ywey"]
 
+[ext_resource type="PackedScene" uid="uid://dppd52xxyo11i" path="res://scenes/walls.tscn" id="1_bcod8"]
 [ext_resource type="PackedScene" uid="uid://b45gvy00gdkr8" path="res://scenes/player.tscn" id="1_x86bu"]
 
 [node name="main" type="Node2D"]
 
+[node name="Walls" parent="." instance=ExtResource("1_bcod8")]
+
 [node name="Player" parent="." instance=ExtResource("1_x86bu")]
-position = Vector2(456, 312)
-
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-collision_layer = 3
-collision_mask = 3
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
-polygon = PackedVector2Array(448, 448, 448, 256, 576, 256, 576, 192, 448, 192, 384, 192, 384, 448, 384, 512, 640, 512, 640, 448)
-
-[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="StaticBody2D"]
-position = Vector2(8, 0)
-polygon = PackedVector2Array(472, 416, 472, 280, 568, 280, 568, 416)
+position = Vector2(256, 376)

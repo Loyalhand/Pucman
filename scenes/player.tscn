@@ -1,16 +1,32 @@
-[gd_scene load_steps=4 format=3 uid="uid://b45gvy00gdkr8"]
+[gd_scene load_steps=6 format=3 uid="uid://b45gvy00gdkr8"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_h8cpo"]
-[ext_resource type="Texture2D" uid="uid://blsmdmdysa2f0" path="res://icon.svg" id="2_oher1"]
+[ext_resource type="Texture2D" uid="uid://dxby64xon1h8u" path="res://assets/pacmanPack/PacMan.png" id="2_um5mu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wofng"]
 size = Vector2(16, 16)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_4dlqb"]
+atlas = ExtResource("2_um5mu")
+region = Rect2(96, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hauxk"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4dlqb")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_h8cpo")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_oher1")
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_wofng")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_hauxk")
